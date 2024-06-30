@@ -32,8 +32,7 @@
 ## Τρόπος Εκτέλεσης Συστήματος
 1. Χρησιμοποιήστε το αποθετήριο:
     ```bash
-    git clone <your-repository-url>
-    cd <repository-folder>
+    cd <repository-folder>](https://github.com/ChristAris/YpoxreotikiErgasia24_-AM-_-Epwnymo-_-Onoma-.git)
     ```
 
 2. Δημιουργήστε το Docker image και ξεκινήστε τα containers με Docker Compose:
