@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Appointments</title>
+</head>
+<body>
+    <h1>Your Appointments</h1>
+    {% if appointments %}
+        <ul>
+            {% for appointment in appointments %}
+                <li>
+                    <p>Date: {{ appointment.date }}</p>
+                    <p>Time: {{ appointment.time }}</p>
+                    <p>Doctor: {{ appointment.doctor_name }} {{ appointment.doctor_surname }}</p>
+                    <p>Speciality: {{ appointment.doctor_speciality }}</p>
+                    <p>Reason: {{ appointment.reason }}</p>
+                    <form method="POST" action="{{ url_for('cancel_appointment') }}">
+                        <input type="hidden" name="appointment_id" value="{{ appointment._id }}">
+                        <button type="submit">Cancel Appointment</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no upcoming appointments.</p>
+    {% endif %}
+</body>
+</html>

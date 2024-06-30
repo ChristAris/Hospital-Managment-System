@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Hospital System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if 'user' in session %}
+                    {% if session['user'] == 'patient' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('patient_dashboard') }}">My Appointments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('search_appointment') }}">Book New Appointment</a>
+                        </li>
+                    {% endif %}
+                    {% if session['user'] == 'doctor' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Patient List</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Dashboard</h1>
+        <h2 class="text-center mb-4">My Upcoming Appointments</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <ul class="list-group">
+                    {% for appointment in appointments %}
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Date & Time:</strong> {{ appointment['appointment_datetime'] }} <br>
+                                <strong>Doctor Name:</strong> {{ appointment['doctor_name'] }} {{ appointment['doctor_surname'] }} <br>
+                                <a href="{{ url_for('view_appointment', appointment_id=appointment['_id']) }}" class="btn btn-sm btn-primary mt-2">View Details</a>
+                                <form action="{{ url_for('delete_appointment', appointment_id=appointment['_id']) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger mt-2">Cancel Appointment</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('search_appointment') }}" class="btn btn-primary">Book New Appointment</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+            integrity="sha384-RIMmNwu2h6YyEiSwL/lhANzqTG9grS88dSsWt6uZsA2lZtGdflXWyACqg80Dz/8T"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-Ke4s1A0FpJAVxuHIjzU7kvE8RbXIXSwKvP1zvscb/H+g4JLA5QrvAuwusYM4L2Sd"
+            crossorigin="anonymous"></script>
+</body>
+</html>

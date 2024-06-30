@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Hospital Information System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        {% if 'user' in session and session['user'] == 'doctor' %}
+          <li class="nav-item">
+            <a class="nav-link" href="/doctor/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/doctor/change_password">Change Password</a>
+          </li>
+        {% endif %}
+        {% if 'user' in session %}
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+
+<div class="container mt-5">
+    <h1 class="text-center">Dashboard</h1>
+    {% if 'user' in session and session['user'] == 'doctor' %}
+        <h3 class="text-center mb-4">Welcome, {{ session['doctor_name'] }} {{ session['doctor_surname'] }}</h3>
+    {% endif %}
+    <h2 class="text-center mb-4">My Upcoming Appointments</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <ul class="list-group">
+                {% for appointment in appointments %}
+                    <li class="list-group-item">
+                        <div>
+                            <strong>Date & Time:</strong> {{ appointment['appointment_datetime'] }} <br> 
+                            <strong>Patient Name:</strong> {{ appointment['patient_username'] }}<br>
+                            <strong>Reason:</strong> {{ appointment['reason'] }}<br>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Change Appointment Cost
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('change_appointment_cost') }}" method="post">
+                    <div class="form-group">
+                        <label for="new_cost">New Cost:</label>
+                        <input type="text" class="form-control" id="new_cost" name="new_cost" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change Cost</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
